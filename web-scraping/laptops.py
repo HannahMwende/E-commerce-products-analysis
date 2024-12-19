@@ -1,4 +1,4 @@
-# Import data
+# Import libraries
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
