@@ -34,7 +34,7 @@ for page in range(1, 30):
                 "Name" : fridge_name,
                 "Price": fridge_price,
                 "Reviews": fridge_reviews,
-                "Retings": fridge_ratings
+                "Ratings": fridge_ratings
             })
         
         except AttributeError:
