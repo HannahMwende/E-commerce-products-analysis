@@ -21,7 +21,7 @@ def connect_to_db():
 #Main function to ingest data
 def ingest_data():
     #connect to postgresql
-    conn = connect_to_db
+    conn = connect_to_db()
     cur = conn.cursor
 
     #Open the CVS file
