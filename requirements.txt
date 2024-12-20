@@ -1,0 +1,5 @@
+pandas
+csv
+psycopg2
+bs4
+requests
