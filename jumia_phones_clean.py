@@ -19,6 +19,6 @@ def phones_cleaning(csv_path):
     dataset = dataset.drop(columns = ["Price", "Old Price", "Reviews"])
     columns = ["Description", "brand", "price", "old_price", "reviews", "RAM", "storage", "Battery"]
     dataset = dataset[columns]
-    dataset.to_csv("cleaned_phones_jumia", index = False)
+    dataset.to_csv("cleaned_phones_jumia.csv", index = False)
     
     return dataset

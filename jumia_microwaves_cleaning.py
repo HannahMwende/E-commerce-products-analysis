@@ -11,5 +11,5 @@ def microwaves_cleaning(csv_path):
     data["capacity"] = result[0]
     columns = ["descriptions", "brand", "Price", "Old_price", "capacity", "Reviews"]
     data = data[columns]
-    data.to_csv("cleaned_microwaves", index = False)
+    data.to_csv("cleaned_microwaves.csv", index = False)
     return data
