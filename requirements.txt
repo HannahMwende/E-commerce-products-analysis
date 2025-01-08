@@ -3,3 +3,4 @@ csv
 psycopg2
 bs4
 requests
+re

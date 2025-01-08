@@ -1,4 +1,4 @@
-import psycogp2
+import psycopg2
 import csv
 
 #Database Connection Parameters
@@ -40,4 +40,4 @@ def ingest_data():
     print("Data ingested successfully")
 
 if __name__ == __main__:
-    ingest_data()
+    ingest_data()   
