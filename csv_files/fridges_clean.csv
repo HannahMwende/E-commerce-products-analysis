@@ -1,4 +1,4 @@
-Name,Brand,Size(Litres),Doors,Color,Warranty(Years),Price,Reviews,Ratings
+name,brand,size_litres,doors,color,warranty_years,price,reviews,ratings
 "Ramtons RF/335 - 85L Single Door Refrigerator – Silver, (1YR WRTY)",Ramtons RF,,,Silver,1.0,15999.0,66,4.1
 Hisense 94 Liters Single Door Fridge REF094DR (2YRs WRTY),Hisense,,,,2.0,16799.0,87,4.4
 "Ramtons RF/203, 2 Door Direct Cool Fridge, 128 Litres - Silver(1YR WRTY)",Ramtons RF,128.0,2.0,Silver,1.0,28099.0,69,4.2
