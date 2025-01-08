@@ -45,6 +45,8 @@ for page in range(1, 51):  # Pages 1 to 50
 df = pd.DataFrame(laptops)
 df.to_csv('laptops.csv', index=False, encoding='utf-8')
 
+
+# Extracting fridges data.
 # List to store all fridges data
 fridges = []
 
