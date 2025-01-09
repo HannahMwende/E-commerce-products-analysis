@@ -4,3 +4,4 @@ airflow/logs/*
 
 .venv
 csv_files/*
+logs/*
