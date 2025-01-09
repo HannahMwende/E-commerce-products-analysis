@@ -1,2 +1,7 @@
 csv_files/*
 logs/
+env/
+data/*
+airflow/logs/*
+.venv
+logs/*
