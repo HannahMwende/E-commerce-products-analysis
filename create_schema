@@ -11,3 +11,15 @@ reviews_count VARCHAR(50) NOT NULL
 )
 
 SELECT * FROM jumia_tvs
+
+
+CREATE TABLE jumia_cookers (
+    product_name TEXT,
+    price TEXT,
+    old_price TEXT,
+    discount TEXT,
+    rating TEXT,
+    item_id TEXT,
+    item_brand TEXT,
+    product_url TEXT
+);
