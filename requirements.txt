@@ -3,4 +3,9 @@ csv
 psycopg2
 bs4
 requests
-re
+beautifulsoup4
+lxml
+requests
+selenium
+pandas
+numpy
