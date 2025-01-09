@@ -7,3 +7,14 @@ numpy
 pandas
 psycopg2 #psycopg2-binary
 python-dotenv
+pandas
+csv
+psycopg2
+bs4
+requests
+beautifulsoup4
+lxml
+requests
+selenium
+pandas
+numpy
