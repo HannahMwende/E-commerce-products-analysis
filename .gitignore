@@ -5,7 +5,8 @@ logs/*
 env/
 data/*
 airflow/logs/*
-
+*.csv
 .venv
 csv_files/*
 logs/*
+logs/scheduler/2025-01-09/native_dags/example_dags/*
