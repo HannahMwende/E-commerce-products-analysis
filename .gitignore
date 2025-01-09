@@ -1,0 +1,12 @@
+myenv/
+.csv /*
+.env/
+logs/*
+env/
+data/*
+airflow/logs/*
+
+.venv
+csv_files/*
+logs/*
+*.csv
