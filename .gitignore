@@ -1,3 +1,7 @@
+myenv/
+.csv /*
+.env/
+logs/*
 env/
 data/*
 airflow/logs/*
