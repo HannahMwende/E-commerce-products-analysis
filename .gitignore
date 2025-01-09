@@ -6,3 +6,15 @@ kilimall_microwaves_no_rating.csv
 kilimall_phones_no_rating.csv
 microwaves.ipynb
 phones.ipynb
+myenv/
+.csv /*
+.env/
+logs/*
+env/
+data/*
+airflow/logs/*
+
+.venv
+csv_files/*
+logs/*
+*.csv
