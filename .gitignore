@@ -1,3 +1,4 @@
-.myenv/
-.csv_files/*
+myenv/
+.csv /*
 .env/
+logs/
