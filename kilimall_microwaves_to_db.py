@@ -25,7 +25,7 @@ def ingest_data():
     cur = conn.cursor()
 
     # Open the CSV file
-    with open('cleanedmicrowaves_file.csv', 'r', encoding='utf-8') as file:
+    with open(r"C:\Users\Vivian.Obino1\Desktop\e-commerce analysis\data\clean\kilimall_clean_microwaves.csv", 'r', encoding='utf-8') as file:
         data_reader = csv.reader(file)
         next(data_reader)  # Skip the header row
 
@@ -35,7 +35,8 @@ def ingest_data():
             brand = row[0]
             reviews = row[1]
             price = row[2]
-            capacity = row[3]
+            microwaves_url = row[3]
+            capacity = row[4]
 
             # Convert empty strings in price and capacity to None (NULL)
             if price == '':
@@ -57,7 +58,7 @@ def ingest_data():
                     capacity = None  # If it can't be converted, set as NULL
 
             # Insert data into the table
-            cur.execute("INSERT INTO kilimall_microwave (brand, reviews, price, capacity) VALUES (%s, %s, %s, %s)", (brand, reviews, price, capacity))
+            cur.execute("INSERT INTO kilimall_microwave (brand, reviews, price,microwaves_url, capacity) VALUES (%s, %s, %s, %s, %s)", (brand, reviews, price, microwaves_url, capacity))
 
     # Commit and close the connection
     conn.commit()
