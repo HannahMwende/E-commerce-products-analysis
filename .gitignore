@@ -5,7 +5,7 @@ env/
 data/clean/*.csv
 data/scraped/*.csv
 airflow/logs/*
-
+misc/
 .venv
 csv_files/*
 logs/*
