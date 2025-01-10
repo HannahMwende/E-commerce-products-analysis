@@ -12,3 +12,5 @@ logs/*
 .env
 myenv/*
 logs/*
+
+dags/_pycache_/*
