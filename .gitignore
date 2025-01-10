@@ -1,7 +1,14 @@
-csv_files/*
-logs/
+myenv
+.csv /*
+logs/*
 env/
 data/*
 airflow/logs/*
+
 .venv
+csv_files/*
+logs/*
+*.csv
+.env
+myenv/*
 logs/*

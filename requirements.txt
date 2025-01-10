@@ -1,3 +1,11 @@
-BeautifulSoup
+requests
+beautifulsoup4
+urllib3
 numpy
 pandas
+psycopg2
+python-dotenv
+pandas
+csv
+lxml
+selenium
