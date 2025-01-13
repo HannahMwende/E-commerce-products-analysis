@@ -25,4 +25,4 @@ Naming conventions:
 {website}_scrape/clean_{product}.ipynb
 
 - dags
-{website}_scrape/clean_{product}.py
+{website}_{product}.py --> include scraping and cleaning for each product in the same .py file
