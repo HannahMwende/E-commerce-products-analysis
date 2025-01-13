@@ -1,20 +1,29 @@
-CREATE TABLE jumia_phones (
-Description  VARCHAR (500),
-brand VARCHAR (500),
-price VARCHAR (500),
-old_price VARCHAR (500),
-reviews VARCHAR (500),
-RAM VARCHAR (500),
-storage VARCHAR (500),
-Battery VARCHAR(500)
-)
+Table phones 
+{
+  id integer [primary key]
+  description varchar
+  brand varchar
+  price int
+  old_price int nullable
+  reviews float nullable
+  number_of_reviews int nullable
+  ram int
+  storage int
+  battery int
+  source varchar
+  url varchar
+}
 
-
-CREATE TABLE IF NOT EXISTS jumia_microwaves (
-descriptions  VARCHAR (500),
-brand VARCHAR (500),
-price VARCHAR (500),
-Old_price VARCHAR (500),
-capacity VARCHAR (500),
-Reviews VARCHAR (500)
-);
+  Table microwaves 
+{
+  id integer [primary key]
+  description varchar
+  brand varchar
+  price float
+  old_price float nullable
+  number_of_reviews nullable
+  capacity float
+  reviews int nullable
+  source varchar
+  url varchar
+}
