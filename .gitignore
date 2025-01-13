@@ -2,7 +2,8 @@ myenv
 .csv /*
 logs/*
 env/
-data/*
+data/clean/*.csv
+data/scraped/*.csv
 airflow/logs/*
 *.csv
 .venv
@@ -11,3 +12,6 @@ logs/*
 *.csv
 .env
 myenv/*
+logs/*
+
+dags/_pycache_/*

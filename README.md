@@ -17,9 +17,12 @@ or save directly to db
 
 # pip install -r requirements.txt
 
-Naming conventions for the 
+Naming conventions:
+- data files
+{website}_product.csv
+
 - scripts:
 {website}_scrape/clean_{product}.ipynb
 
 - dags
-{website}_scrape/clean_{product}.py
+{website}_{product}.py --> include scraping and cleaning for each product in the same .py file
