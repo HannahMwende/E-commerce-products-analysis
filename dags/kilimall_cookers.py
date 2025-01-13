@@ -55,7 +55,7 @@ cooktops_df["product_link"] = cooktops_links
 # save as csv
 cooktops_df.to_csv(r"data\scraped\kilimall_cooktops.csv", index = False, encoding = "utf-8")
 
-print("successfully saved scraped kilimall_cooktops.csv")
+#print("successfully saved scraped kilimall_cooktops.csv")
 
 # (b) Standing cookers
 # getting data with standing cooker product links
@@ -102,7 +102,7 @@ cooker_df["product_link"] = cooker_links
 # save as csv
 cooker_df.to_csv(r"data\scraped\kilimall_standingcooker.csv", index = False, encoding = "utf-8")
 
-print("successfully saved scraped kilimall_standingcooker.csv")
+#print("successfully saved scraped kilimall_standingcooker.csv")
 
 # 2. cleaning cookers data
 
@@ -248,7 +248,10 @@ def id_source (df):
 # adding the columns to cookers df
 id_source(cookers)
 
+# restructure the df columns
+cookers = cookers[['id', 'name', 'price', 'brand', 'capacity', 'type', 'reviews', 'category', 'source', 'url']]
+
 # save the cleaned data to a csv file
 cookers.to_csv(r'data\clean\kilimall_cookers.csv', index=False)
 
-print('successfully saved clean kilimall_cookers.csv')
+#print('successfully saved clean kilimall_cookers.csv')

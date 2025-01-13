@@ -1,6 +1,5 @@
 # import necessary modules
 import psycopg2   # all modules installed via requirements.txt
-import csv
 from dotenv import load_dotenv
 import os
 

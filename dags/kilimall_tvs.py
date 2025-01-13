@@ -55,7 +55,7 @@ tv_df["product_link"] = tv_links
 # save as csv
 tv_df.to_csv(r"data\scraped\kilimall_tvs.csv", index = False, encoding = "utf-8")
 
-print("successfully saved scraped kilimall_tvs.csv")
+#print("successfully saved scraped kilimall_tvs.csv")
 
 
 # 2. cleaning tvs data
@@ -126,9 +126,9 @@ tv_data_no_dupes["source"] = "kilimall"
 tv_data_no_dupes["id"] = tv_data_no_dupes.index
 
 # restructure the dataframe to have the columns in a more logical order
-tv_data_no_dupes = tv_data_no_dupes[["id", "source", "name", "brand", "size", "type", "reviews", "price", "url"]]
+tv_data_no_dupes = tv_data_no_dupes[["id", "name", "price", "brand", "size", "type", "reviews", "source", "url"]]
 
 # save the cleaned data to a csv file
 tv_data_no_dupes.to_csv(r"data\clean\kilimall_tvs.csv", index=False)
 
-print("successfully saved clean kilimall_tvs.csv")
+#print("successfully saved clean kilimall_tvs.csv")
