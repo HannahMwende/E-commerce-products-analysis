@@ -1,0 +1,6 @@
+2025-01-10 14:59:31,028 - INFO - Testing pagination for https://www.jumia.co.ke/televisions/
+2025-01-10 14:59:32,566 - INFO - Last page number for https://www.jumia.co.ke/televisions/: 3
+2025-01-10 14:59:33,606 - INFO - Found 100 products on first page of https://www.jumia.co.ke/televisions/
+2025-01-10 14:59:33,606 - INFO - Testing pagination for https://www.jumia.co.ke/home-cooking-appliances-cookers/
+2025-01-10 14:59:34,828 - INFO - Last page number for https://www.jumia.co.ke/home-cooking-appliances-cookers/: 3
+2025-01-10 14:59:35,735 - INFO - Found 50 products on first page of https://www.jumia.co.ke/home-cooking-appliances-cookers/
