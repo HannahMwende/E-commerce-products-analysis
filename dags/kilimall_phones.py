@@ -3,6 +3,12 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 import re
+import psycopg2
+import csv
+import logging
+import os
+from dotenv import load_dotenv
+
 baseurl = "https://www.kilimall.co.ke/"
 headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.123 Safari/537.36 AOLShield/123.0.6312.3'} 
 
@@ -135,12 +141,12 @@ def kilimall_phones_clean(csv_path):
     dataframe["description"] = dataframe['phones_name']
     dataframe['source'] = ['kilimall'] *len(dataframe)
     dataframe['id'] = [i for i in range(1,len(dataframe)+1)]
-    dataframe['urls'] = dataframe['phone_url']
+    dataframe['url'] = dataframe['phone_url']
     dataframe = dataframe.drop(columns = ['phones_name', 'phones_reviews', 'phones_price', 'phone_url'])
     # dataframe.rename({""})
-    columns = ["id", "description", "brand", "price", "number_of_reviews", "ram", "storage", "battery", "source", "urls"]
+    columns = ["id", "description", "brand", "price", "number_of_reviews", "ram", "storage", "battery", "source", "url"]
     dataframe = dataframe[columns]
-    dataframe.to_csv("../data/clean/kilimall_clean_phones.csv", index = False)
+    dataframe.to_csv(r"C:\Users\Vivian.Obino1\Desktop\e-commerce analysis\data\clean\kilimall_clean_phones.csv", index = False)
 
 
     
@@ -155,3 +161,82 @@ csv_path =(r"C:\Users\Vivian.Obino1\Desktop\e-commerce analysis\data\scraped\kil
 dataframe = kilimall_phones_clean(csv_path)
 dataframe
 
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# Load environment variables from the .env file
+load_dotenv()
+
+# Database connection parameters
+DB_HOST = os.getenv('DB_HOST')
+DB_NAME = os.getenv('DB_NAME')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_PORT = os.getenv('DB_PORT')
+
+# Function to connect to PostgreSQL
+def connect_to_db():
+    try:
+        conn = psycopg2.connect(
+            host=DB_HOST,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD,
+            port=DB_PORT
+        )
+       
+        logging.info("Successfully connected to the database.")
+        return conn
+    except psycopg2.Error as e:
+        print(f"Error connecting to the database: {e}")
+        exit(1)
+# Main function to ingest data
+def ingest_data():
+    # Connect to PostgreSQL
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    
+    # Create the table if it does not exist
+    #create_table(cur)
+    #csv path
+    csv_path =r"C:\Users\Vivian.Obino1\Desktop\e-commerce analysis\data\clean\kilimall_clean_phones.csv"
+    # Check if the CSV file exists
+    if not os.path.exists(csv_path):
+            print(f"Error: File not found at {csv_path}")
+            conn.close()
+            exit(1)
+
+        # Open the CSV file and ingest data
+    try:
+        with conn.cursor() as cur:
+            with open(csv_path, 'r', encoding='utf-8') as file:
+                data_reader = csv.reader(file)
+                next(data_reader)  # Skip the header row
+
+                # Insert each row into the table
+                for row in data_reader:
+                         
+                    try:
+                
+                        insert = """
+                            INSERT INTO phones(description, brand, price,number_of_reviews,ram,storage,battery,source, url)
+                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        """
+
+                        cur.execute(insert,row[1:])
+                    
+                    except Exception as e:
+                        print(f"Error inserting row {row}: {e}")
+
+        conn.commit()
+        logging.info("Data ingested successfully")
+    except Exception as e:
+        logging.error(f"Error while ingesting data: {e}")
+
+    finally:
+       if conn:
+            conn.close()
+            logging.info("Database connection closed.")
+
+if __name__ == "__main__":
+    ingest_data()

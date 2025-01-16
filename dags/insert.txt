@@ -1,0 +1,4 @@
+"""
+                        INSERT INTO kilimall_phones_table(id,description, brand, price,number_of_reviews,ram,storage,battery,source, urls)
+                        VALUES (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """
