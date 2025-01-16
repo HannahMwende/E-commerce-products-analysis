@@ -10,7 +10,11 @@ def web_scraping_jumia_microwaves(url, baseurl):
     reviews_list = []
     urls = []
 
-    r = requests.get(url)
+    headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
+    }   
+
+    r = requests.get(url, headers = headers)
     print(f"Fetching data from {url} Status {r}")
 
     if r.status_code == 200:
@@ -99,7 +103,7 @@ def collect_data_microwaves():
 
     df = pd.DataFrame(data, columns = ['descriptions', 'price', 'old_price', 'ratings', 'urls'])
 
-    df.to_csv(r"..\data\scraped_data\jumia_scraped_microwaves.csv", index = False)
+    df.to_csv(r"./data/scraped/jumia_scraped_microwaves.csv", index = False)
 
 
 url = "https://www.jumia.co.ke/small-appliances-microwave/"
@@ -133,29 +137,34 @@ def jumia_microwaves_cleaning(csv_path):
     data = data.drop(columns = ["price", "ratings", "old_price"])
     columns = ["id", "descriptions", "brand", "Price", "Old_price", "capacity", "Reviews", "source", "urls"]
     data = data[columns]
-    data.rename(columns = {"descriptions" : "description", "Price" : "price", "Old_price" : "old_price", "Reviews" :  "reviews"})
-    data = data[columns]
-    data.to_csv(r"..data\clean_data\jumia_clean_microwaves.csv", index=False)
+    data = data.rename(columns = {"descriptions" : "description", "Price" : "price", "Old_price" : "old_price", "Reviews" :  "reviews"})
+   
+    data.to_csv(r"../data/clean/jumia_clean_microwaves.csv", index=False)
 
     return data
 
 
-csv_path = r"..data\scraped_data\jumia_scraped_microwaves.csv"
+csv_path = r"../data/scraped/jumia_scraped_microwaves.csv"
 
 
 jumia_microwaves_cleaning(csv_path)
 
-
 import psycopg2
 import csv
 import os
+import psycopg2   # all modules installed via requirements.txt
+from dotenv import load_dotenv
 
-# Database Connection Parameters
-DB_HOST = 'localhost'
-DB_NAME = 'airflow'
-DB_USER = 'airflow'
-DB_PASSWORD = 'airflow'
-DB_PORT = '5432'
+
+# Load environment variables from the .env file
+load_dotenv()
+
+# Database connection parameters
+DB_HOST = os.getenv('DB_HOST')
+DB_NAME = os.getenv('DB_NAME')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_PORT = os.getenv('DB_PORT')
 
 # Function to connect to PostgreSQL
 def connect_to_db():
@@ -173,37 +182,39 @@ def connect_to_db():
         exit(1)
 
 # Function to create the `jumia_microwaves` table if it does not exist
-def create_table(cur):
-    create_table_query = """
-    CREATE TABLE IF NOT EXISTS jumia_microwaves (
-        id SERIAL PRIMARY KEY,
-        descriptions TEXT,
-        brand TEXT,
-        price INTEGER,
-        old_price INTEGER,
-        capacity TEXT,
-        reviews TEXT,
-        source TEXT,
-        urls TEXT
-    );
-    """
-    try:
-        cur.execute(create_table_query)
-    except psycopg2.Error as e:
-        print(f"Error creating table: {e}")
-        exit(1)
+# def create_table(cur):
+#     create_table_query = """
+#     CREATE TABLE IF NOT EXISTS jumia_phones (
+#         id SERIAL PRIMARY KEY,
+#         Description TEXT,
+#         brand TEXT,
+#         price INTEGER,
+#         old_price INTEGER,
+#         reviews TEXT,
+#         RAM TEXT,
+#         storage TEXT,
+#         Battery TEXT,
+#         source TEXT,
+#         urls TEXT
+#     );
+#     """
+#     try:
+#         cur.execute(create_table_query)
+#     except psycopg2.Error as e:
+#         print(f"Error creating table: {e}")
+#         exit(1)
 
 # Main function to ingest data
-def ingest_data():
+def ingest_phone_data():
     # Connect to PostgreSQL
     conn = connect_to_db()
     cur = conn.cursor()
 
     # Create the table if it does not exist
-    create_table(cur)
+    # create_table(cur)
 
     # Define the CSV file path
-    csv_file_path = r'C:\Users\charity.ngari\Desktop\e-commerce-product-analysis\data\clean_data\jumia_clean_microwaves.csv'
+    csv_file_path = r"./data/clean/jumia_clean_microwaves.csv"
 
     # Check if the CSV file exists
     if not os.path.exists(csv_file_path):
@@ -219,14 +230,14 @@ def ingest_data():
 
             # Insert each row into the table
             for row in data_reader:
-                if len(row) != 9:  # Ensure row has exactly 8 values
+                if len(row) != 11:  # Ensure row has exactly 8 values
                     print(f"Skipping row with incorrect number of values: {row}")
                     continue
                 cur.execute("""
-                    INSERT INTO jumia_microwaves (id,descriptions,brand,Price,Old_price,capacity,Reviews,source,urls)
+                    INSERT INTO microwaves (id,description,brand,price,old_price,capacity, reviews, source, url)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """, row)
-                
+
         # Commit the transaction
         conn.commit()
         print("Data ingested successfully")
@@ -239,4 +250,4 @@ def ingest_data():
         conn.close()
 
 if __name__ == "__main__":
-    ingest_data()
+    ingest_phone_data()

@@ -1,13 +1,19 @@
 import psycopg2
 import csv
 import os
+import psycopg2   # all modules installed via requirements.txt
+from dotenv import load_dotenv
 
-# Database Connection Parameters
-DB_HOST = 'localhost'
-DB_NAME = 'airflow'
-DB_USER = 'airflow'
-DB_PASSWORD = 'airflow'
-DB_PORT = '5432'
+
+# Load environment variables from the .env file
+load_dotenv()
+
+# Database connection parameters
+DB_HOST = os.getenv('DB_HOST')
+DB_NAME = os.getenv('DB_NAME')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_PORT = os.getenv('DB_PORT')
 
 # Function to connect to PostgreSQL
 def connect_to_db():
@@ -25,27 +31,27 @@ def connect_to_db():
         exit(1)
 
 # Function to create the `jumia_microwaves` table if it does not exist
-def create_table(cur):
-    create_table_query = """
-    CREATE TABLE IF NOT EXISTS jumia_phones (
-        id SERIAL PRIMARY KEY,
-        Description TEXT,
-        brand TEXT,
-        price INTEGER,
-        old_price INTEGER,
-        reviews TEXT,
-        RAM TEXT,
-        storage TEXT,
-        Battery TEXT,
-        source TEXT,
-        urls TEXT
-    );
-    """
-    try:
-        cur.execute(create_table_query)
-    except psycopg2.Error as e:
-        print(f"Error creating table: {e}")
-        exit(1)
+# def create_table(cur):
+#     create_table_query = """
+#     CREATE TABLE IF NOT EXISTS jumia_phones (
+#         id SERIAL PRIMARY KEY,
+#         Description TEXT,
+#         brand TEXT,
+#         price INTEGER,
+#         old_price INTEGER,
+#         reviews TEXT,
+#         RAM TEXT,
+#         storage TEXT,
+#         Battery TEXT,
+#         source TEXT,
+#         urls TEXT
+#     );
+#     """
+#     try:
+#         cur.execute(create_table_query)
+#     except psycopg2.Error as e:
+#         print(f"Error creating table: {e}")
+#         exit(1)
 
 # Main function to ingest data
 def ingest_phone_data():
@@ -54,10 +60,10 @@ def ingest_phone_data():
     cur = conn.cursor()
 
     # Create the table if it does not exist
-    create_table(cur)
+    # create_table(cur)
 
     # Define the CSV file path
-    csv_file_path = r'C:\Users\charity.ngari\Desktop\e-commerce-product-analysis\data\clean_data\jumia_clean_phones.csv'
+    csv_file_path = r"./data/clean/jumia_clean_phones.csv"
 
     # Check if the CSV file exists
     if not os.path.exists(csv_file_path):
@@ -77,7 +83,7 @@ def ingest_phone_data():
                     print(f"Skipping row with incorrect number of values: {row}")
                     continue
                 cur.execute("""
-                    INSERT INTO jumia_phones (id,Description,brand,price,old_price,reviews,RAM,storage,Battery,source, urls)
+                    INSERT INTO phones (id,description,brand,price,old_price,reviews,ram,storage,battery,source, url)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """, row)
 
