@@ -12,7 +12,11 @@ def web_scraping(base_url, first_page_url):
     urls = []
 
     # Scrape the first page
-    r = requests.get(first_page_url)
+
+    headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
+    }
+    r = requests.get(first_page_url, headers = headers)
     print(f"Fetching data from: {first_page_url} - Status: {r.status_code}")
 
     if r.status_code == 200:
@@ -55,7 +59,7 @@ def web_scraping(base_url, first_page_url):
     # Scrape pages 2 to 50
     for i in range(2, 51):
         page_url = f"{base_url}{i}#catalog-listing"
-        r = requests.get(page_url)
+        r = requests.get(page_url, headers = headers)
         print(f"Fetching data from: {page_url} - Status: {r.status_code}")
 
         if r.status_code != 200:
@@ -107,7 +111,7 @@ def collect_data_phones():
     df = pd.DataFrame(data, columns=['Description', 'Price', 'Old Price', 'Reviews', 'urls'])
 
     # Save to CSV
-    df.to_csv('..data\jumia_scraped_phones.csv', index=False)
+    df.to_csv('./data/scraped/jumia_scraped_phones.csv', index=False)
 
 
  #Base URL for pages 2 to 50
@@ -124,9 +128,9 @@ def phones_cleaning(csv_path):
     id = [i for i in range(1, len(dataset) + 1)]
     dataset["id"] = id
     dataset["id"] = dataset["id"].astype(int)
-    dataset["source"] = ["Jumia"] * len(data)
+    dataset["source"] = ["Jumia"] * len(dataset)
     dataset["price"] = dataset["Price"].str.replace("KSh", "").str.replace(",", "")
-    # dataset.drop("Price", axis = 1)
+    dataset.drop("Price", axis = 1)
     dataset["price"] = dataset["price"].str.strip().str.replace("-", "").str.extract(r"(\d+)", expand = False)
     dataset["price"] = dataset["price"].astype(int)
     dataset["old_price"] = dataset["Old Price"].str.replace("KSh", "").str.replace(",", "")
@@ -150,30 +154,37 @@ def phones_cleaning(csv_path):
     result = dataset["Description"].str.extract(f"({pattern_bat})")
     dataset["Battery"] = result[0]
     dataset["Battery"] = dataset["Battery"].str.replace("mAh", "").str.replace("mah","").str.replace("MAH","").str.replace("MaH","").str.replace("MAh","")
-    dataset["Battery"] = pd.to_numeric(data["Battery"], errors = "coerce")
+    dataset["Battery"] = pd.to_numeric(dataset["Battery"], errors = "coerce")
     dataset = dataset.drop(columns = ["Price", "Old Price", "Reviews"])
-    columns = ["id", "Description", "brand", "price", "old_price", "reviews", "RAM", "storage", "Battery", "source", "url"]
+    columns = ["id", "Description", "brand", "price", "old_price", "reviews", "RAM", "storage", "Battery", "source", "urls"]
     dataset = dataset[columns]
-    dataset.to_csv(r"..\data\clean_data\jumia_clean_phones.csv", index = False)
+    dataset = dataset.rename(columns = {"Description" :"description", "RAM":"ram", "Battery":  "battery" , "urls": "url" })
+    dataset.to_csv(r"../data/clean/jumia_clean_phones.csv", index = False)
     
     return dataset
 
 
-csv_path = "data/scraped_data/jumia_scraped_phones.csv"
-
+csv_path = r"../data/scraped/jumia_scraped_phones.csv"
 
 phones_cleaning(csv_path)
+
 
 import psycopg2
 import csv
 import os
+import psycopg2   # all modules installed via requirements.txt
+from dotenv import load_dotenv
 
-# Database Connection Parameters
-DB_HOST = 'localhost'
-DB_NAME = 'airflow'
-DB_USER = 'airflow'
-DB_PASSWORD = 'airflow'
-DB_PORT = '5432'
+
+# Load environment variables from the .env file
+load_dotenv()
+
+# Database connection parameters
+DB_HOST = os.getenv('DB_HOST')
+DB_NAME = os.getenv('DB_NAME')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_PORT = os.getenv('DB_PORT')
 
 # Function to connect to PostgreSQL
 def connect_to_db():
@@ -191,27 +202,27 @@ def connect_to_db():
         exit(1)
 
 # Function to create the `jumia_microwaves` table if it does not exist
-def create_table(cur):
-    create_table_query = """
-    CREATE TABLE IF NOT EXISTS jumia_phones (
-        id SERIAL PRIMARY KEY,
-        Description TEXT,
-        brand TEXT,
-        price INTEGER,
-        old_price INTEGER,
-        reviews TEXT,
-        RAM TEXT,
-        storage TEXT,
-        Battery TEXT,
-        source TEXT,
-        urls TEXT
-    );
-    """
-    try:
-        cur.execute(create_table_query)
-    except psycopg2.Error as e:
-        print(f"Error creating table: {e}")
-        exit(1)
+# def create_table(cur):
+#     create_table_query = """
+#     CREATE TABLE IF NOT EXISTS jumia_phones (
+#         id SERIAL PRIMARY KEY,
+#         Description TEXT,
+#         brand TEXT,
+#         price INTEGER,
+#         old_price INTEGER,
+#         reviews TEXT,
+#         RAM TEXT,
+#         storage TEXT,
+#         Battery TEXT,
+#         source TEXT,
+#         urls TEXT
+#     );
+#     """
+#     try:
+#         cur.execute(create_table_query)
+#     except psycopg2.Error as e:
+#         print(f"Error creating table: {e}")
+#         exit(1)
 
 # Main function to ingest data
 def ingest_phone_data():
@@ -220,10 +231,10 @@ def ingest_phone_data():
     cur = conn.cursor()
 
     # Create the table if it does not exist
-    create_table(cur)
+    # create_table(cur)
 
     # Define the CSV file path
-    csv_file_path = r'C:\Users\charity.ngari\Desktop\e-commerce-product-analysis\data\clean_data\jumia_clean_phones.csv'
+    csv_file_path = r"./data/clean/jumia_clean_phones.csv"
 
     # Check if the CSV file exists
     if not os.path.exists(csv_file_path):
@@ -243,7 +254,7 @@ def ingest_phone_data():
                     print(f"Skipping row with incorrect number of values: {row}")
                     continue
                 cur.execute("""
-                    INSERT INTO jumia_phones (id,Description,brand,price,old_price,reviews,RAM,storage,Battery,source, urls)
+                    INSERT INTO phones (id,description,brand,price,old_price,reviews,ram,storage,battery,source, url)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """, row)
 
