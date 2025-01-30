@@ -113,7 +113,7 @@ with DAG(
     'scrape_and_clean_fridge_data',
     default_args=default_args,
     description='Web scrape fridge data and clean it for further processing',
-    schedule_interval='@once',
+    #schedule_interval='@daily',
     catchup=False
 ) as dag:
 
