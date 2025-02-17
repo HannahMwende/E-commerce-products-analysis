@@ -11,6 +11,7 @@ import configparser
 import psycopg2
 
 
+
 # Directory paths for saving scraped and cleaned data
 RAW_DATA_PATH = "/usr/local/airflow/data/scraped/jumia_laptops.csv"
 CLEAN_DATA_PATH = "/usr/local/airflow/data/clean/jumia_laptops.csv"

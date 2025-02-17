@@ -3,7 +3,6 @@ import csv
 from dotenv import load_dotenv
 import os
 
-
 #Database Connection Parameters
 DB_HOST = os.getenv('DB_HOST')
 DB_NAME = os.getenv('DB_NAME')
