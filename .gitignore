@@ -1,4 +1,4 @@
-myenv
+airflow-env
 .csv /*
 logs/*
 env/

@@ -8,7 +8,7 @@ x-airflow-common:
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
-    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/e-commerce
     AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:airflow@postgres/airflow
     AIRFLOW__CELERY__BROKER_URL: redis://:@redis:6379/0
     AIRFLOW__CORE__FERNET_KEY: ''
@@ -44,10 +44,11 @@ x-airflow-common:
 services:
   postgres:
     image: postgres:13
+    container_name: postgres
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
-      POSTGRES_DB: airflow
+      POSTGRES_DB: e-commerce
     ports:
       - "5432:5432"
     volumes:

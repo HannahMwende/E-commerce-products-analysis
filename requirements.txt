@@ -7,7 +7,7 @@ psycopg2
 python-dotenv
 pandas
 lxml
-selenium
+
 logging
 matplotlib
 seaborn
@@ -15,3 +15,4 @@ scikit-learn
 statsmodels
 tqdm
 xgboost
+apache-airflow
