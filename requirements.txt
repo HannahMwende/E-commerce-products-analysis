@@ -7,7 +7,7 @@ psycopg2
 python-dotenv
 pandas
 lxml
-
+apache-airflow-providers-postgres
 logging
 matplotlib
 seaborn
