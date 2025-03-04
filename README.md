@@ -1,28 +1,39 @@
-# Webscraping
+# E-Commerce Product Pricing Dashboard
 
-Webscraping url = https://www.jumia.co.ke/
-Webscraping products
-    * TVs
-    * Cookers
+### Problem Statement
 
-***Packages***
-* BeautifulSoup
-* Requests
+With the ever-changing prices on e-commerce platforms, it becomes challenging for consumers to track and find the best deals. This project aims to solve this problem by creating a data-driven dashboard that monitors product pricing across multiple e-commerce platforms and sends best price alerts to subscribers via email.
 
+### Solution
 
-save to csv
-clean and save, then upload to db
+This project involves an end-to-end data pipeline to track, analyze, and visualize product pricing trends. The system scrapes product data from e-commerce platforms, processes it through an automated ETL workflow, stores it in a database, and visualizes insights using Jupyter, Power BI, and Tableau. Best price alerts are sent to subscribers based on predefined conditions.
 
-or save directly to db
+### Architecture
+![jjool](https://github.com/user-attachments/assets/ad1f7e81-ea5b-4062-b34e-f70f8ec9207b)
 
-# pip install -r requirements.txt
+### Technology Stack
 
-Naming conventions:
-- data files
-{website}_product.csv
+* Programming Language: Python
+* Orchestration: Apache Airflow
+* Database: PostgreSQL
+* Visualization: Power BI, Tableau, Jupyter Notebook
+* Containerization: Docker
+* Automation: ETL pipeline for data processing
 
-- scripts:
-{website}_scrape/clean_{product}.ipynb
+  
+### Setup and Installation
+1. Clone this repository:
 
-- dags
-{website}_{product}.py --> include scraping and cleaning for each product in the same .py file
+      ```git clone https://github.com/HannahMwende/E-commerce-products-analysis.git```
+
+2. Install required packages:
+
+      ```pip install -r requirements.txt```
+
+3. Set up PostgreSQL database and update connection settings in the configuration file.
+
+4. Configure and run Airflow DAGs for automated scraping and data processing.
+
+5. Deploy the containerized application using Docker:
+   
+      ```docker-compose up -d```
